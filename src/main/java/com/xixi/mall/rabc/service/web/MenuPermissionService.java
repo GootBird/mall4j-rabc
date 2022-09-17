@@ -1,12 +1,14 @@
 package com.xixi.mall.rabc.service.web;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xixi.mall.api.auth.bo.UserInfoInTokenBo;
 import com.xixi.mall.common.core.utils.BooleanUtil;
 import com.xixi.mall.common.core.utils.ThrowUtils;
 import com.xixi.mall.common.core.webbase.vo.BasePageReqBodyVo;
 import com.xixi.mall.common.core.webbase.vo.BasePageRespBodyVo;
+import com.xixi.mall.common.database.utils.PageObjConvertUtil;
 import com.xixi.mall.common.security.context.AuthUserContext;
 import com.xixi.mall.rabc.entity.MenuPermissionEntity;
 import com.xixi.mall.rabc.manage.MenuPermissionManage;
@@ -110,6 +112,14 @@ public class MenuPermissionService {
     }
 
     public BasePageRespBodyVo<MenuPermissionVo> page(BasePageReqBodyVo<?> req) {
-        return null;
+
+        Integer sysType = AuthUserContext.get().getSysType();
+
+        IPage<MenuPermissionVo> queryPage = PageObjConvertUtil.getIPageByPageVo(req.getPageVo());
+        IPage<MenuPermissionVo> resPage = menuPermissionMapper.pageQueryMenu(queryPage, sysType);
+
+        return new BasePageRespBodyVo<MenuPermissionVo>()
+                .setPageInfo(PageObjConvertUtil.getPageVoByIPage(resPage))
+                .setResult(resPage.getRecords());
     }
 }
