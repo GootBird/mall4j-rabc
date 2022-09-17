@@ -1,15 +1,19 @@
 package com.xixi.mall.rabc.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xixi.mall.common.core.webbase.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 角色与菜单对应关系
  */
 @Getter
 @Setter
+@ToString
+@TableName("role_menu")
 public class RoleMenuEntity extends BaseEntity {
 
     /**

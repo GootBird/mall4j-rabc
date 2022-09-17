@@ -1,5 +1,7 @@
 package com.xixi.mall.rabc.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xixi.mall.common.core.webbase.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +15,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+@TableName("menu_permission")
 public class MenuPermissionEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -20,6 +23,7 @@ public class MenuPermissionEntity extends BaseEntity implements Serializable {
     /**
      * 菜单资源用户id
      */
+    @TableId
     private Long menuPermissionId;
 
     /**

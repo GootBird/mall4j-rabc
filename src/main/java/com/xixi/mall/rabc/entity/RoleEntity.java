@@ -1,5 +1,6 @@
 package com.xixi.mall.rabc.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xixi.mall.common.core.webbase.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
+@TableName("role")
 public class RoleEntity extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
