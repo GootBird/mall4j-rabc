@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xixi.mall.rabc.mapper.MenuMapper">
+
+    <resultMap id="MenuSimpleVoMap" type="com.xixi.mall.rabc.vo.MenuSimpleVo">
+        <id column="menu_id" jdbcType="BIGINT" property="menuId"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <collection property="menuPermissions" ofType="com.xixi.mall.rabc.vo.MenuPermissionSimpleVo">
+            <id column="menu_permission_id" property="menuPermissionId"/>
+            <result column="permission_menu_id" property="menuId"/>
+            <result column="name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="listWithPermissions" resultMap="MenuSimpleVoMap">
+        select m.menu_id, m.parent_id, m.title, mp.name, mp.menu_permission_id, mp.menu_id permission_menu_id
+        from menu m
+                 left join menu_permission mp on m.menu_id = mp.menu_id
+        where m.biz_type = #{sysType}
+    </select>
+
+    <select id="listMenuIds" resultType="java.lang.Long">
+        SELECT
+            menu_id
+        FROM
+            user_role ur
+                JOIN role_menu rm ON ur.`user_id` = #{userId} AND ur.`role_id` = rm.`role_id` AND menu_id IS NOT NULL
+    </select>
+
+</mapper>
