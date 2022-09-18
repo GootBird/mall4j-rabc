@@ -1,11 +1,13 @@
 package com.xixi.mall.rabc.manage;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xixi.mall.api.rabc.bo.UriPermissionBo;
 import com.xixi.mall.common.cache.constant.CacheNames;
 import com.xixi.mall.rabc.entity.MenuPermissionEntity;
 import com.xixi.mall.rabc.mapper.MenuPermissionMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -62,6 +64,31 @@ public class MenuPermissionManage {
     @Cacheable(cacheNames = CacheNames.USER_PERMISSIONS_KEY, key = "#sysType + ':' + #userId")
     public List<String> listByUserIdAndSysType(Long userId, Integer sysType) {
         return menuPermissionMapper.listByUserIdAndSysType(userId, sysType);
+    }
+
+    @Cacheable(cacheNames = CacheNames.URI_PERMISSION_KEY, key = "#sysType")
+    public List<UriPermissionBo> listUriPermissionInfo(Integer sysType) {
+        return menuPermissionMapper.selectList(
+                Wrappers.<MenuPermissionEntity>lambdaQuery()
+                        .select(MenuPermissionEntity::getPermission, MenuPermissionEntity::getUri, MenuPermissionEntity::getMethod)
+                        .eq(MenuPermissionEntity::getBizType, sysType)
+        )
+                .stream()
+                .map(val -> {
+                    UriPermissionBo uriPermissionBo = new UriPermissionBo();
+                    uriPermissionBo.setPermission(val.getPermission());
+                    uriPermissionBo.setUri(val.getUri());
+                    uriPermissionBo.setMethod(val.getMethod());
+                    return uriPermissionBo;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Caching(evict = {
+            @CacheEvict(cacheNames = CacheNames.USER_PERMISSIONS_KEY, key = "#sysType + ':' + #userId"),
+            @CacheEvict(cacheNames = CacheNames.MENU_ID_LIST_KEY, key = "#userId")
+    })
+    public void clearUserPermissionsCache(Long userId, Integer sysType) {
     }
 
 }
