@@ -1,5 +1,6 @@
 package com.xixi.mall.rabc.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xixi.mall.common.core.webbase.entity.BaseEntity;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class MenuEntity extends BaseEntity implements Serializable {
     /**
      * 菜单id
      */
+    @TableId
     private Long menuId;
 
     /**
