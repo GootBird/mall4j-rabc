@@ -12,4 +12,20 @@
         WHERE ur.user_id = #{userId}
     </select>
 
+
+    <select id="pageQueryMenu" resultType="com.xixi.mall.rabc.vo.MenuPermissionVo">
+        select mp.`menu_permission_id`,
+               mp.`menu_id`,
+               mp.`biz_type`,
+               mp.`permission`,
+               mp.`name`,
+               `uri`,
+               `method`,
+               m.title menuTitle
+        from menu_permission mp
+                 left join menu m on mp.menu_id = m.menu_id
+        where mp.biz_type = #{sysType}
+        order by mp.menu_permission_id desc
+    </select>
+
 </mapper>
